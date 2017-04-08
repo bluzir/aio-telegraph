@@ -1,9 +1,10 @@
 import asyncio
 
-from telegraph import TelegraphClient
+from telegraph import TelegraphAPIClient
+
 
 async def main(loop):
-    tg = TelegraphClient()
+    tg = TelegraphAPIClient()
     tg.loop = loop
     response = await tg.get_page_list()
     if response['ok']:

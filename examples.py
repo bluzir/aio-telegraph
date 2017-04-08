@@ -1,19 +1,23 @@
 import asyncio
 
-from telegraph import TelegraphAPIClient
+from api import TelegraphAPIClient
 
-
-async def main(loop):
-    tg = TelegraphAPIClient()
-    tg.loop = loop
+async def get_posts_count():
     response = await tg.get_page_list()
     if response['ok']:
         result = response['result']
         total_count = result['total_count']
-        print('You have {} post(s) at telegra.ph'.format(total_count))
+        return total_count
     else:
-        print('Something gone wrong')
+        return 0
+
+
+async def main(loop):
+    posts = await get_posts_count()
+    print(posts)
 
 loop = asyncio.get_event_loop()
+tg = TelegraphAPIClient()
+tg.loop = loop
 loop.run_until_complete(main(loop))
 

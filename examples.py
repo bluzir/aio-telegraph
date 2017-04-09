@@ -13,6 +13,13 @@ async def register_user():
     else:
         return False
 
+async def check_token():
+    response = await tg.get_account_info()
+    if response['ok']:
+        return True
+    else:
+        return False
+
 
 async def get_posts_count():
     response = await tg.get_page_list()
@@ -24,7 +31,7 @@ async def get_posts_count():
         return 0
 
 
-async def main(loop):
+async def main():
     user = await register_user()
     if user:
         token = user['access_token']
@@ -32,7 +39,7 @@ async def main(loop):
         tg.ACCESS_TOKEN = token
         count = await get_posts_count()
         print('Your access token: {}'.format(token))
-        print('You can authentificate in browser by this url: {}'.format(auth_url))
+        print('You can authenticate in browser by this url: {}'.format(auth_url))
         print('Your posts count is {}'.format(count))
     else:
         print("Something gone wrong")
@@ -41,5 +48,5 @@ async def main(loop):
 loop = asyncio.get_event_loop()
 tg = TelegraphAPIClient()
 tg.loop = loop
-loop.run_until_complete(main(loop))
+loop.run_until_complete(main())
 

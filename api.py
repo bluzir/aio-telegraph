@@ -1,4 +1,3 @@
-import asyncio
 import json
 
 import settings as config
@@ -10,12 +9,15 @@ class TelegraphAPIClient(BaseClient):
     BASE_URL = 'https://api.telegra.ph/{}'
     ACCESS_TOKEN = config.ACCESS_TOKEN
 
-    def __init__(self):
+    def __init__(self, access_token=None):
         super(TelegraphAPIClient, self).__init__()
         self.client = None
-        self.access_token = None
+        self.access_token = access_token
         self.params = None
         self.data = None
+
+        if not self.access_token:
+            self.access_token = config.ACCESS_TOKEN
 
     async def create_account(self, short_name=None, author_name=None, author_url=None):
         self.url = self.BASE_URL.format('createAccount')
@@ -94,7 +96,7 @@ class TelegraphAPIClient(BaseClient):
             'path': path,
             'return_content': return_content,
         }
-        result = await self.get_page()
+        result = await self.get_request()
         return result
 
     async def get_page_list(self, offset=0, limit=50):

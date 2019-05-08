@@ -1,6 +1,7 @@
 import asyncio
 
-from api import TelegraphAPIClient
+from aio_telegraph.api import TelegraphAPIClient
+
 
 async def register_user():
     short_name = input('Enter your short name: ')
@@ -12,6 +13,7 @@ async def register_user():
         return result
     else:
         return False
+
 
 async def check_token():
     response = await tg.get_account_info()
@@ -44,9 +46,9 @@ async def main():
     else:
         print("Something gone wrong")
 
-
-loop = asyncio.get_event_loop()
-tg = TelegraphAPIClient()
-tg.loop = loop
-loop.run_until_complete(main())
+if __name__ == '__main__':
+    loop = asyncio.get_event_loop()
+    tg = TelegraphAPIClient()
+    tg.loop = loop
+    loop.run_until_complete(main())
 

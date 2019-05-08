@@ -1,8 +1,8 @@
 import json
 
-import settings as config
+import aio_telegraph.config as config
 
-from base import BaseClient
+from aio_telegraph.base import BaseClient
 
 
 class TelegraphAPIClient(BaseClient):
@@ -20,7 +20,8 @@ class TelegraphAPIClient(BaseClient):
             self.access_token = config.ACCESS_TOKEN
 
     async def create_account(self, short_name=None, author_name=None, author_url=None):
-        self.url = self.BASE_URL.format('createAccount')
+        method = 'createAccount'
+        self.url = self.BASE_URL.format(method)
         if not short_name:
             short_name = config.SHORT_NAME
 
@@ -39,7 +40,9 @@ class TelegraphAPIClient(BaseClient):
         return result
 
     async def edit_account_info(self):
-        self.url = self.BASE_URL.format('editAccountInfo')
+        method = 'editAccountInfo'
+        self.url = self.BASE_URL.format(method)
+
         self.params = {
             'short_name': config.SHORT_NAME,
             'author_name': config.AUTHOR_NAME,
@@ -50,7 +53,8 @@ class TelegraphAPIClient(BaseClient):
         return result
 
     async def get_account_info(self):
-        self.url = self.BASE_URL.format('getAccountInfo')
+        method = 'getAccountInfo'
+        self.url = self.BASE_URL.format(method)
         fields = ['short_name', 'author_name', 'author_url', 'auth_url', 'page_count']
         self.params = {
             'fields': json.dumps(fields),
@@ -60,7 +64,8 @@ class TelegraphAPIClient(BaseClient):
         return result
 
     async def revoke_access_token(self):
-        self.url = self.BASE_URL.format('revokeAccessToken')
+        method = 'revokeAccessToken'
+        self.url = self.BASE_URL.format(method)
         self.params = {
             'access_token': self.ACCESS_TOKEN,
         }
@@ -68,7 +73,9 @@ class TelegraphAPIClient(BaseClient):
         return result
 
     async def create_page(self, title, content, return_content=False):
-        self.url = self.BASE_URL.format('createPage')
+        method = 'createPage'
+        self.url = self.BASE_URL.format(method)
+
         self.params = {
             'title': title,
             'content': content,
@@ -79,7 +86,8 @@ class TelegraphAPIClient(BaseClient):
         return result
 
     async def edit_page(self, path, title, content, return_content=False):
-        self.url = self.BASE_URL.format('editPage')
+        method = 'editPage'
+        self.url = self.BASE_URL.format(method)
         self.params = {
             'access_token': self.ACCESS_TOKEN,
             'path': path,
